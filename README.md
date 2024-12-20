@@ -8,7 +8,7 @@
 
 ## 1. Ringkasan Singkat
 
-- Final Project untuk mata kuliah “Pemrograman Website” adalah mengimplementasikan ilmu yang didapat dari mata kuliah ini untuk membuat sebuah web. Dari beberapa topik yang diusung, kelompok kami memilih topik “Multi Person To Do List”. 
+- Final Project untuk mata kuliah “Pemrograman Website” adalah mengimplementasikan ilmu yang didapat dari mata kuliah ini untuk membuat sebuah web. Dari beberapa topik yang diusung, kelompok kami memilih topik “Multiperson To Do List”. 
 
 - Sesuai dengan nama topik, web ini bertujuan untuk memungkinkan beberapa pengguna mengelola daftar tugas (to-do list) secara bersamaan. Fitur utama yang ditawarkan mencakup:  
 
