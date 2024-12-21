@@ -119,4 +119,4 @@
 
 - https://github.com/amelianova/todolist-multiperson.git
 - https://documenter.getpostman.com/view/40475331/2sAYJ1jhEu
-- https://todolist-multiperson-kawaii.vercel.app/
+- https://todolist-kawaii.vercel.app/
