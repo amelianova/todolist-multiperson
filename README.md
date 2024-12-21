@@ -101,7 +101,8 @@
    `Server running on port 3000` dan `mongodb connected`
 6. Buka `localhost:3000` pada browser Anda
 7. Anda sudah terhubung pada website lokal
-8. Apabila anda ingin melihat aktivitas yang tercatat dalam database, Anda bisa membuka link pada `mongodb.js` bagian mongoose.connect
+8. Apabila anda ingin melihat aktivitas yang tercatat dalam database, Anda bisa membuka link `mongodb+srv://projectkawaii:kelompok13@cluster0.zyhyr.mongodb.net/`
+9. Anda akan diarahkan ke aplikasi MongoDB Compass
 
 ## Deploy Website
 
