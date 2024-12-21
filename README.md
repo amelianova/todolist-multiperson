@@ -91,6 +91,16 @@
 ### Antarmuka Responsif
 
 - Aplikasi dirancang responsif sehingga dapat digunakan dengan nyaman di berbagai perangkat, termasuk desktop, tablet, dan smartphone.
+  
+  _Tampilan pada Desktop._
+  ![Screenshot 2024-12-21 091851](https://github.com/user-attachments/assets/0e0d1058-a56d-47a6-a019-d8cdd889a73c)
+  
+  _Tampilan pada Tablet._
+  ![Screenshot 2024-12-21 092001](https://github.com/user-attachments/assets/52e265c8-4230-448d-87af-f95985cdd692)
+
+  _Tampilan pada Smartphone._
+  ![Screenshot 2024-12-21 092025](https://github.com/user-attachments/assets/be40ebbe-eb78-4483-8c3d-964a6e46ab08)
+
 
 ## Instalasi
 
