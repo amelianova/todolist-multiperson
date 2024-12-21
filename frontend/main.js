@@ -29,6 +29,57 @@ function handleLogout() {
     window.location.href = '/'; 
 }
 
+/*
+// Function to show custom alert
+function showCustomAlert(message) {
+    const alertBox = document.getElementById('custom-alert');
+    const alertMessage = document.getElementById('alert-message');
+    alertMessage.textContent = message;
+    alertBox.classList.remove('hidden');
+}
+
+// Function to close custom alert
+function closeCustomAlert() {
+    const alertBox = document.getElementById('custom-alert');
+    alertBox.classList.add('hidden');
+} */
+
+// Function to show notification
+function showNotification(message, type = 'info', duration = 3000) {
+    const container = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        ${message}
+        <span class="notification-close">&times;</span>
+    `;
+
+    // Add close button functionality
+    const closeButton = notification.querySelector('.notification-close');
+    closeButton.addEventListener('click', () => {
+        notification.style.animation = 'fadeOut 0.3s ease-out forwards';
+        setTimeout(() => {
+            container.removeChild(notification);
+        }, 300);
+    });
+
+    // Auto remove after duration
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'fadeOut 0.3s ease-out forwards';
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    container.removeChild(notification);
+                }
+            }, 300);
+        }
+    }, duration);
+
+    container.appendChild(notification);
+}
+
+
 async function fetchGroups() {
     try {
         // Get the user_id from localStorage
@@ -90,14 +141,21 @@ async function addGroup() {
                 newOption.value = newGroup.name;
                 newOption.textContent = newGroup.name;
                 groupSelect.appendChild(newOption);
+
+                // Show custom alert for success
+                showNotification("Group created successfully.");
             } else {
-                alert("Failed to add group!");
+                // Show custom alert for failure
+                showNotification("Failed to add group.");
             }
         } catch (error) {
             console.error("Error:", error);
+            // Show custom alert for error
+            showNotification("An error occurred while adding the group.");
         }
     } else {
-        alert("Group name already exists!");
+        // Show custom alert for duplicate or invalid group name
+        showNotification("Group name already exists or is invalid.");
     }
 }
 
@@ -128,7 +186,7 @@ function editGroup() {
         const editGroupModal = new bootstrap.Modal(document.getElementById("editGroupModal"));
         editGroupModal.show();
     } else {
-        alert("Please select a group to edit!");
+        showNotification("Please select a group to edit.");
     }
 }
 
@@ -140,7 +198,7 @@ function saveEditedGroup() {
     if (editedGroupName && editedGroupName !== oldGroupName) {
         // Check if the new name already exists
         if (groups[editedGroupName]) {
-            alert("A group with this name already exists!");
+            showNotification("A group with this name already exists.");
             return;
         }
 
@@ -161,7 +219,7 @@ function saveEditedGroup() {
         const myModal = new bootstrap.Modal(document.getElementById('editGroupModal'));
         myModal.hide();
     } else {
-        alert("Please enter a valid group name.");
+        showNotification("Please enter a valid group name.");
     }
 }
 
@@ -183,13 +241,13 @@ async function deleteGroup() {
                 groupSelect.value = "default";
                 loadGroup("default");
             } else {
-                alert("Failed to delete group!");
+                showNotification("Failed to delete group.");
             }
         } catch (error) {
             console.error("Error:", error);
         }
     } else {
-        alert("Please select a group to delete!");
+        showNotification("Please select a group to delete.");
     }
 }
 
@@ -254,18 +312,18 @@ async function editPerson(element) {
                         header.textContent = editedPersonName;
                         editPersonModal.hide(); // Hide modal on success
                     } else {
-                        alert(result.message); // Show error message if API call fails
+                        showNotification(result.message); // Show error message if API call fails
                     }
                 } catch (error) {
                     console.log(error);
-                    alert("An error occurred while updating the person.");
+                    showNotification("An error occurred while updating the person.");
                 }
             } else {
-                alert("Please enter a valid name.");
+                showNotification("Please enter a valid name.");
             }
         };
     } else {
-        alert("Invalid person name!");
+        showNotification("Invalid person name.");
     }
 }
 
@@ -288,10 +346,10 @@ async function deletePerson(element) {
             // Remove the person's card from the UI
             personCard.remove();
         } else {
-            alert(result.message); // Show error message if API call fails
+            showNotification(result.message); // Show error message if API call fails
         }
     } catch (error) {
-        alert("An error occurred while deleting the person.");
+        showNotification("An error occurred while deleting the person.");
     }
 }
 
@@ -314,7 +372,7 @@ async function saveEditedPerson() {
         const group = groups[currentGroup];
 
         if (editedPersonName === oldPersonName) {
-            alert("The new name is the same as the current name.");
+            showNotification("The new name is the same as the current name.");
             return;
         }
 
@@ -334,14 +392,14 @@ async function saveEditedPerson() {
 
                     bootstrap.Modal.getInstance(document.getElementById("editPersonModal")).hide();
                 } else {
-                    alert("Failed to update person name!");
+                    showNotification("Failed to update person name.");
                 }
             }
         } catch (error) {
             console.error("Error:", error);
         }
     } else {
-        alert("Please enter a valid person name.");
+        showNotification("Please enter a valid person name.");
     }
 }
 
@@ -369,7 +427,7 @@ async function submitTask() {
 
     // Validation
     if (!taskName) {
-        alert("Please enter a task name.");
+        showNotification("Please enter a task name.");
         return;
     }
 
@@ -389,11 +447,15 @@ async function submitTask() {
 
             const result = await response.json();
             if (result.success) {
-                alert("Task added to all persons in the group!");
+                showNotification("Task added to all persons in the group.");
+                // Add 2 second delay before redirecting
+                setTimeout(() => {
                 // reload but add query groupId to url
-                window.location.href = `?group_id=${currentGroupId}`;
+                    window.location.href = `?group_id=${currentGroupId}`;
+                }, 2000); // 2000 milliseconds = 2 seconds
             } else {
-                alert("Failed to add task to all persons.");
+                // Show error message
+                showNotification("Failed to add task to all persons.");
             }
         } else {
             // If "Add to All" is not checked, add the task to the selected person only
@@ -407,14 +469,14 @@ async function submitTask() {
 
             const result = await response.json();
             if (result.success) {
-                alert("Task added successfully!");
+                showNotification("Task added successfully.");
             } else {
-                alert("Failed to add task.");
+                showNotification("Failed to add task.");
             }
         }
     } catch (error) {
         console.error("Error adding task:", error);
-        alert("An error occurred while adding the task.");
+        showNotification("An error occurred while adding the task.");
     }
 
     // Hide the modal
@@ -471,7 +533,7 @@ function editGroup() {
         const editGroupModal = new bootstrap.Modal(document.getElementById("editGroupModal"));
         editGroupModal.show();
     } else {
-        alert("Please select a group to edit!");
+        showNotification("Please select a group to edit.");
     }
 }
 
@@ -505,20 +567,20 @@ async function saveEditedGroup() {
                 // Update the option text in the dropdown
                 selectedOption.text = editedGroupName;
 
-                alert("Group name updated successfully!");
+                showNotification("Group name updated successfully.");
 
                 // Close the modal
                 const myModal = bootstrap.Modal.getInstance(document.getElementById('editGroupModal'));
                 myModal.hide();
             } else {
-                alert(result.message || "Failed to update group name.");
+                showNotification(result.message || "Failed to update group name.");
             }
         } catch (error) {
             console.error("Error updating group:", error);
-            alert("An error occurred. Please try again.");
+            showNotification("An error occurred. Please try again.");
         }
     } else {
-        alert("Please enter a valid group name & no duplicate group name.");
+        showNotification("Please enter a valid group name & no duplicate group name.");
     }
 }
 
@@ -544,7 +606,7 @@ async function savePerson() {
     const personName = document.getElementById("personName").value.trim();
     if (personName && currentGroup) {
         if (isDuplicatePerson(personName)) {
-            alert("Person with the same name already exists in this group!");
+            showNotification("Person with the same name already exists in this group.");
             return;
         }
 
@@ -559,13 +621,13 @@ async function savePerson() {
                 loadGroup(currentGroup);
                 bootstrap.Modal.getInstance(document.getElementById("addPersonModal")).hide();
             } else {
-                alert("Failed to add person!");
+                showNotification("Failed to add person.");
             }
         } catch (error) {
             console.error("Error:", error);
         }
     } else {
-        alert("Please select a group first!");
+        showNotification("Please select a group first.");
     }
 }
 
@@ -725,7 +787,7 @@ async function toggleTaskStatus(groupId, personId, taskId, checkbox) {
 
             console.log("Task status updated:", newStatus);
         } else {
-            alert("Failed to update task status");
+            showNotification("Failed to update task status.");
         }
     } catch (error) {
         console.error("Error updating task status:", error);
@@ -752,7 +814,7 @@ async function toggleFavorite(groupId, personId, taskId, button) {
             // Reorder tasks: This should be done after updating the favorite status.
             reorderTasks(groupId, personId);
         } else {
-            alert("Failed to update favorite status");
+            showNotification("Failed to update favorite status.");
         }
     } catch (error) {
         console.error("Error toggling favorite:", error);
@@ -802,7 +864,7 @@ async function updateDueDate(groupId, personId, taskId, input) {
         if (result.success) {
             console.log("Due date updated to:", newDueDate);
         } else {
-            alert("Failed to update due date");
+            showNotification("Failed to update due date.");
         }
     } catch (error) {
         console.error("Error updating due date:", error);
@@ -821,7 +883,7 @@ async function deleteTask(groupId, personId, taskId, button) {
             button.closest('.list-container').remove(); // Remove task from DOM
             console.log("Task deleted successfully");
         } else {
-            alert("Failed to delete task");
+            showNotification("Failed to delete task.");
         }
     } catch (error) {
         console.error("Error deleting task:", error);
@@ -884,7 +946,7 @@ async function saveGroup() {
     const userId = localStorage.getItem("user_id");
 
     if (!userId) {
-        alert("You must be logged in to create a group.");
+        showNotification("You must be logged in to create a group.");
         return;
     }
 
@@ -909,15 +971,15 @@ async function saveGroup() {
                 groupSelect.appendChild(newOption);
 
                 bootstrap.Modal.getInstance(document.getElementById("addGroupModal")).hide();
-                alert("Group created successfully!");
+                showNotification("Group created successfully.");
             } else {
-                alert(result.message || "Failed to save group.");
+                showNotification(result.message || "Failed to save group.");
             }
         } catch (error) {
             console.error("Error saving group:", error);
-            alert("An error occurred. Please try again.");
+            showNotification("An error occurred. Please try again.");
         }
     } else {
-        alert("Please enter a group name!");
+        showNotification("Please enter a group name.");
     }
 }

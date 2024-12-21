@@ -271,7 +271,86 @@
     transform: scale(1.05); /* Tambahkan efek zoom saat di-hover */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Lebih tebal saat hover */
   }
-  
+
+/* Custom Notification Styles */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.notification {
+    background: #eee6f3;
+    border-left: 4px solid #8260a2;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 25px 12px 15px;
+    margin-top: 10px;
+    width: 300px;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+    font-size: 14px;
+    color: #5c4b68;
+}
+
+.notification.success {
+    border-left-color: #4CAF50;
+    background-color: #e8f5e9;
+}
+
+.notification.error {
+    border-left-color: #f44336;
+    background-color: #ffebee;
+}
+
+.notification.info {
+    border-left-color: #C097CF;
+    background-color: #eeeeee;
+}
+
+.notification.warning {
+    border-left-color: #ff9800;
+    background-color: #fff3e0;
+}
+
+.notification-close {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.notification-close:hover {
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
     </style>
   </head>
   <body>
@@ -291,6 +370,10 @@
         </form>
       </div>
     </div>
+
+    <!-- Replace the existing custom-alert div with this notification system -->
+    <div id="notification-container" class="notification-container"></div>
+
     <script>
   const form = document.querySelector("form");
   form.addEventListener("submit", async (e) => {
@@ -298,6 +381,41 @@
 
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
+
+    // Function to show notification
+    function showNotification(message, type = 'info', duration = 3000) {
+        const container = document.getElementById('notification-container');
+        const notification = document.createElement('div');
+        
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            ${message}
+            <span class="notification-close">&times;</span>
+        `;
+
+        // Add close button functionality
+        const closeButton = notification.querySelector('.notification-close');
+        closeButton.addEventListener('click', () => {
+            notification.style.animation = 'fadeOut 0.3s ease-out forwards';
+            setTimeout(() => {
+                container.removeChild(notification);
+            }, 300);
+        });
+
+        // Auto remove after duration
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.style.animation = 'fadeOut 0.3s ease-out forwards';
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        container.removeChild(notification);
+                    }
+                }, 300);
+            }
+        }, duration);
+
+        container.appendChild(notification);
+    }
 
     try {
       const response = await fetch("/signup", {
@@ -308,19 +426,23 @@
 
       const result = await response.json();
 
-      if (result.success) {
+    if (result.success) {
         // Store user_id in localStorage if needed
         localStorage.setItem("user_id", result.user_id);
 
-        // Redirect or show a success message
-        alert("Account created successfully! Please log in.");
-        window.location.href = "/login"; // Redirect to login page
-      } else {
+        // Show success message
+        showNotification("Account created successfully. Please log in.");
+        
+        // Add 2 second delay before redirecting
+        setTimeout(() => {
+            window.location.href = "/login"; // Redirect to login page
+        }, 2000); // 2000 milliseconds = 2 seconds
+    } else {
         // Show error message
-        alert(result.message);
-      }
+        showNotification(result.message);
+    }
     } catch (error) {
-      alert("An error occurred during signup. Please try again.");
+      showNotification("An error occurred during signup. Please try again.");
       console.error("Signup Error:", error);
     }
   });

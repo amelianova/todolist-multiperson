@@ -263,3 +263,150 @@ input[type="date"] {
 .favorite.active {
     color: blue; /* Warna biru ketika bintang diaktifkan */
 }
+
+/* Custom Alert Styles */
+
+/* .custom-alert {
+    position: fixed;
+    bottom: 20px;          
+    right: 20px;          
+    width: auto;          
+    height: auto;         
+    background: transparent; 
+    display: block;       
+    z-index: 9999;
+} 
+
+.hidden {
+    display: none;
+}
+
+.alert-content {
+    background: #eee6f3;
+    border: 2px solid #d1b8e1;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px 25px;
+    text-align: left;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert-title {
+    font-size: 20px;
+    color: #8260a2;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.alert-message {
+    font-size: 14px;
+    color: #5c4b68;
+    margin-bottom: 15px;
+}
+
+.alert-button {
+    background: #d1b8e1;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.alert-button:hover {
+    background: #b897c8;
+} */
+
+/* Custom Notification Styles */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.notification {
+    background: #eee6f3;
+    border-left: 4px solid #8260a2;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 25px 12px 15px;
+    margin-top: 10px;
+    width: 300px;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+    font-size: 14px;
+    color: #5c4b68;
+}
+
+.notification.success {
+    border-left-color: #4CAF50;
+    background-color: #e8f5e9;
+}
+
+.notification.error {
+    border-left-color: #f44336;
+    background-color: #ffebee;
+}
+
+.notification.info {
+    border-left-color: #C097CF;
+    background-color: #eeeeee;
+}
+
+.notification.warning {
+    border-left-color: #ff9800;
+    background-color: #fff3e0;
+}
+
+.notification-close {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.notification-close:hover {
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
